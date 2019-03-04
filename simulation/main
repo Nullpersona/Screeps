@@ -1,7 +1,8 @@
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
-
+var roleRepairer = require('role.repairer');
+var levelOne = require('level.one');
 
 module.exports.loop = function () {
 
@@ -28,33 +29,44 @@ module.exports.loop = function () {
     }
     
 
-        Game.rooms.sim.createConstructionSite(32, 23, STRUCTURE_CONTAINER,'Container1');
-        Game.rooms.sim.createConstructionSite(23, 25, STRUCTURE_EXTENSION);
-        Game.rooms.sim.createConstructionSite(24, 25, STRUCTURE_EXTENSION);
-        Game.rooms.sim.createConstructionSite(25, 25, STRUCTURE_EXTENSION);
-        Game.rooms.sim.createConstructionSite(25, 24, STRUCTURE_EXTENSION);
-        Game.rooms.sim.createConstructionSite(25, 23, STRUCTURE_EXTENSION);
 
-    
+//*levelOne.run;*//
+
+
+    var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
+    console.log('Repairers: ' + repairers.length);
+
+    if(repairers.length < 1) {
+        var newName = 'Repairer' + Game.time;
+        console.log('Spawning new repairer: ' + newName);
+        Game.spawns['Spawn1'].spawnCreep([WORK,WORK,MOVE,CARRY], newName, 
+            {memory: {role: 'repairer'}});
+    }  
+
+
+
+
     var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
     console.log('Upgraders: ' + upgraders.length);
-
+    
+    if(upgraders.length < 1) {
+        var newName = 'Upgrader' + Game.time;
+        console.log('Spawning new upgrader: ' + newName);
+        Game.spawns['Spawn1'].spawnCreep([WORK,WORK,MOVE,CARRY], newName, 
+            {memory: {role: 'upgrader'}});
+    }
+    
+    
     var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
     console.log('Builders: ' + builders.length);
-
+    
     if(builders.length < 3) {
         var newName = 'Builder' + Game.time;
         console.log('Spawning new builder: ' + newName);
         Game.spawns['Spawn1'].spawnCreep([WORK,WORK,MOVE,CARRY], newName, 
             {memory: {role: 'builder'}});
-    }      
+    }  
     
-    if(upgraders.length < 3) {
-        var newName = 'Upgrader' + Game.time;
-        console.log('Spawning new upgrader: ' + newName);
-        Game.spawns['Spawn1'].spawnCreep([WORK,WORK,MOVE,CARRY], newName, 
-            {memory: {role: 'upgrader'}});
-    }     
     
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
     console.log('Harvesters: ' + harvesters.length);
@@ -62,9 +74,11 @@ module.exports.loop = function () {
     if(harvesters.length < 2) {
         var newName = 'Harvester' + Game.time;
         console.log('Spawning new harvester: ' + newName);
-        Game.spawns['Spawn1'].spawnCreep([WORK, CARRY, CARRY, MOVE, MOVE], newName, 
+        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY, MOVE], newName, 
             {memory: {role: 'harvester'}});
     }
+    
+    
 
     if(Game.spawns['Spawn1'].spawning) { 
         var spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
@@ -85,8 +99,11 @@ module.exports.loop = function () {
         if(creep.memory.role == 'upgrader') {
             roleUpgrader.run(creep);
         }
-       if(creep.memory.role == 'builder') {
+        if(creep.memory.role == 'builder') {
             roleBuilder.run(creep);
+        }
+        if(creep.memory.role == 'repairer') {
+            roleRepairer.run(creep);
         }
     }
 

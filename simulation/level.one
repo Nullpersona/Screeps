@@ -1,0 +1,8 @@
+
+        Game.rooms.sim.createConstructionSite(32, 23, STRUCTURE_CONTAINER,'Container1');
+        Game.rooms.sim.createConstructionSite(23, 25, STRUCTURE_EXTENSION);
+        Game.rooms.sim.createConstructionSite(24, 25, STRUCTURE_EXTENSION);
+        Game.rooms.sim.createConstructionSite(25, 25, STRUCTURE_EXTENSION);
+        Game.rooms.sim.createConstructionSite(25, 24, STRUCTURE_EXTENSION);
+        Game.rooms.sim.createConstructionSite(25, 23, STRUCTURE_EXTENSION);
+        Game.rooms.sim.createConstructionSite(40, 41, STRUCTURE_CONTAINER,'Container2');

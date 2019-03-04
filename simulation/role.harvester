@@ -1,4 +1,4 @@
-var roleUpgrader = {
+var roleHarvester = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
@@ -26,12 +26,16 @@ var roleUpgrader = {
             }
         }
         else {
-            var sources = creep.room.find(FIND_SOURCES);
+            /*During harvesting phase*/
+	        var sources = creep.room.find(FIND_SOURCES);
+	            /*Find energy sources to harvest*/
             if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+                /*If energy source is out of range*/
                 creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+                    /*Move to energy source*/
             }
         }
 	}
 };
 
-module.exports = roleUpgrader;
+module.exports = roleHarvester;

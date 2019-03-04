@@ -29,10 +29,13 @@ var roleBuilder = {
             }
 	    }
 	    else {
-	    /*During harvesting phase*/
+            /*During harvesting phase*/
 	        var sources = creep.room.find(FIND_SOURCES);
+	            /*Find energy sources to harvest*/
             if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+                /*If energy source is out of range*/
                 creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+                    /*Move to energy source*/
             }
 	    }
 	}

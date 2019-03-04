@@ -1,0 +1,49 @@
+var roleRepairer = {
+
+    /** @param {Creep} creep **/
+    run: function(creep) {
+
+	    if(creep.memory.repairing && creep.carry.energy == 0) { 
+	    /*If it runs out of energy while repairing*/
+            creep.memory.repairing = false;
+            /*Stop repairing*/
+            creep.say('🔄 harvest');
+            /*Switch to harvesting*/
+	    }
+	    if(!creep.memory.repairing && creep.carry.energy == creep.carryCapacity) {
+	    /*If it's not repairing and it fills up it's energy*/
+	        creep.memory.repairing = true;
+	        /*Stop harvesting*/
+	        creep.say('🚧 repair');
+	        /*Switch to repairing*/
+	    }
+
+	    if(creep.memory.repairing) {
+	    /*During repairing phase*/
+	        var targets = creep.room.find(FIND_STRUCTURES, {
+                filter: object => object.hits < object.hitsMax
+            });
+
+            targets.sort((a,b) => a.hits - b.hits);
+
+            if(targets.length > 0) {
+                if(creep.repair(targets[0]) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                }
+            }
+        }
+    	        /*Find damaged buildings*/
+                
+    	    else {
+                /*During harvesting phase*/
+    	        var sources = creep.room.find(FIND_SOURCES);
+    	            /*Find energy sources to harvest*/
+                if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+                    /*If energy source is out of range*/
+                    creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+                        /*Move to energy source*/
+                }
+    	    }
+	    }
+    };
+module.exports = roleRepairer;
